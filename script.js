@@ -1,16 +1,36 @@
 // add javascript here
-let level, answer, score;
+let level, answer, score, fullname;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 playBtn.addEventListener("click", play);
 guessBtn.addEventListener("click", makeGuess);
-date.textContent = time();
-setInterval(time, 1000);
+giveUp.addEventListener("click", giveUpFn);
+let timers = setInterval(time, 1000);
+const dates = document.getElementById("dates");
+time();
+nameBtn.addEventListener("click", names);
+function names(){
+    let name = document.getElementById("name").value;
+    firstlast = name.split(" ");
+    firstlast[0] = firstlast[0].toLowerCase();
+    firstlast[1] = firstlast[1].toLowerCase();
+    firstlast[0] = firstlast[0].charAt(0).toUpperCase() + firstlast[0].slice(1);
+    firstlast[1] = firstlast[1].charAt(0).toUpperCase() + firstlast[1].slice(1);
+    fullname = firstlast.join(" ");
+    document.getElementById("welcome").textContent = "Welcome "+fullname+"!";
+}
+function giveUpFn(){
+    msg.textContent = "Why did you give up? bruh";
+    score=level;
+    updateScore();
+    reset();
+}
 function play(){
     score=0;
     playBtn.disabled=true;
     guessBtn.disabled=false;
     guess.disabled=false;
+    giveUp.disabled=false;
     for(let i=0; i<levelArr.length; i++){
         if(levelArr[i].checked){
             level = levelArr[i].value;
@@ -19,7 +39,6 @@ function play(){
     }
     msg.textContent = "Guess a number from 1-"+level;
     answer = Math.floor(Math.random()*level)+1;
-    guess.placeholder = answer;
 }
 function makeGuess(){
     let userGuess = parseInt(guess.value);
@@ -35,17 +54,26 @@ function makeGuess(){
         msg.textContent = "Too low, try again";
     }
     else{
-        msg.textContent = "You got it! It took you "+score+" tries. Press play to play again";
+        if(score<4){
+            msg.textContent = fullname+", you got it! It took you "+score+" tries. Excellent score! Press play to play again";
+        }
+        else if(score<9){
+            msg.textContent = fullname+", you got it! It took you "+score+" tries. Pretty decent, eh? Press play to play again";
+        }
+        else{
+            msg.textContent = fullname+", you got it! It took you "+score+" tries. Quite bad, do better next time. Press play to play again";
+        }
         updateScore();
         reset();
     }
 }
 function reset(){
     guessBtn.disabled = true;
-    guess.disabled-true;
+    guess.disabled=true;
     guess.value="";
     guess.placeholder="";
     playBtn.disabled=false;
+    giveUp.disabled=true;
     for(let i=0; i<levelArr.length; i++){
         levelArr[i].disabled=false;
     }    
@@ -59,7 +87,12 @@ function updateScore(){
     for(let i=0; i<scoreArr.length; i++){
         sum+=scoreArr[i];
         if(i<lb.length){
-            lb[i].textContent = scoreArr[i];
+            if(fullname!=null){
+                lb[i].textContent = fullname+" - "+scoreArr[i];
+            }
+            else{
+                lb[i].textContent = scoreArr[i];
+            }
         }
     }
     let avg = sum/scoreArr.length;
@@ -67,5 +100,6 @@ function updateScore(){
 }
 function time(){
     let d = new Date();
-    return d;
+    dates.textContent = d;
 }
+
