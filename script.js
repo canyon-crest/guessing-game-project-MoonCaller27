@@ -10,6 +10,12 @@ const scoreArr = [];
 playBtn.addEventListener("click", play);
 guessBtn.addEventListener("click", makeGuess);
 giveUp.addEventListener("click", giveUpFn);
+guess.addEventListener('keydown', function(event) {
+  if (event.key == 'Enter') {
+    event.preventDefault(); 
+    makeGuess(); 
+  }
+});
 let timers = setInterval(time, 1000);
 const dates = document.getElementById("dates");
 time();
