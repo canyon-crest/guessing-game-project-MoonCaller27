@@ -5,6 +5,24 @@ let besttime = 1e9;
 let start;
 let timerinterval;
 let totaltime=0;
+document.addEventListener('DOMContentLoaded', function() {
+    function typeWriter() {
+      const title = document.getElementById("title");
+      const txt = title.innerText;
+      const speed = 50;
+      let i = 0;
+      function type() {
+        if (i < txt.length) {
+          title.innerHTML += txt.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      title.innerHTML = ""; 
+      type();
+    }
+    typeWriter();
+  });
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 playBtn.addEventListener("click", play);
@@ -91,7 +109,7 @@ function makeGuess(){
         else if(Math.abs(userGuess-answer)<=8){
            msg.textContent = "Too high, try again (you're warm)";
         }
-        else if(Math.abs(userguess-answer<=20)){
+        else if(Math.abs(userGuess-answer<=20)){
             msg.textContent = "Too high, try again (you're cold)";
         }
         else{
@@ -105,7 +123,7 @@ function makeGuess(){
         else if(Math.abs(userGuess-answer)<=8){
            msg.textContent = "Too low, try again (you're warm)";
         }
-        else if(Math.abs(userguess-answer<=20)){
+        else if(Math.abs(userGuess-answer<=20)){
             msg.textContent = "Too low, try again (you're cold)";
         }
         else{
@@ -129,6 +147,7 @@ function makeGuess(){
         updateStatsTime();
         reset();
     }
+    document.getElementById("tries").textContent = "Tries: "+score;
 }
 function reset(){
     guessBtn.disabled = true;

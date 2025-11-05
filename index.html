@@ -5,15 +5,19 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <h1 style="text-align:center" id="title">Guessing Game</h1>
     <p id="dates"></p>
     <h3>Name</h3>
     <input type="text" id="name" placeholder="first and last name">
     <button id="nameBtn">Name</button>
     <h3 id="welcome"></h3>
+    
     <h3>Level</h3>
     <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
     <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
     <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
+    <input type="radio" name="level" id="i" value="1000"><label for="i">Impossible</label>
+
 
     <button id="playBtn">Play</button>
 
@@ -23,6 +27,7 @@
     <button id="giveUp" disabled>Give Up</button>
     <br>
     <p id="timer">Time: </p>
+    <p id="tries">Tries: 0</p>
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
     <p id="avgScore">Average Score: </p>
