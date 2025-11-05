@@ -31,6 +31,7 @@ function names(){
     document.getElementById("welcome").textContent = "Welcome "+fullname+"!";
 }
 function giveUpFn(){
+    msg.style.color = "red";
     msg.textContent = "Why did you give up? bruh";
     clearInterval(timerinterval);
     totaltime+=gametime;
@@ -54,6 +55,7 @@ function play(){
         msg.textContent = "Please set your name (first and last)";
         return;
     }
+    msg.style.color = "black";
     start = new Date().getTime();
     score=0;
     clearInterval(timerinterval);
@@ -111,6 +113,7 @@ function makeGuess(){
         } 
     }
     else{
+        msg.style.color="green";
         clearInterval(timerinterval);
         totaltime+=gametime;
         if(score<4){
