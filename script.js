@@ -1,5 +1,10 @@
 // add javascript here
 let level, answer, score, fullname;
+let gametime;
+let besttime = 1e9;
+let start;
+let timerinterval;
+let totaltime=0;
 const levelArr = document.getElementsByName("level");
 const scoreArr = [];
 playBtn.addEventListener("click", play);
@@ -21,12 +26,32 @@ function names(){
 }
 function giveUpFn(){
     msg.textContent = "Why did you give up? bruh";
+    clearInterval(timerinterval);
+    totaltime+=gametime;
+    updateStatsTime();
     score=level;
     updateScore();
     reset();
 }
+function updateStatsTime(){
+    if(gametime<besttime){
+        document.getElementById("besttime").textContent = "Best Time: "+gametime.toFixed(3)+"s";
+        besttime=gametime;
+    }
+    document.getElementById("totaltime").textContent = "Total Time: "+totaltime.toFixed(3)+"s";
+    wins = scoreArr.length;
+    document.getElementById("avgtime").textContent = "Average Time: "+(totaltime/wins).toFixed(3)+"s";
+}
+
 function play(){
+    if(fullname==null){
+        msg.textContent = "Please set your name (first and last)";
+        return;
+    }
+    start = new Date().getTime();
     score=0;
+    clearInterval(timerinterval);
+    timerinterval = setInterval(updateTimer, 10);
     playBtn.disabled=true;
     guessBtn.disabled=false;
     guess.disabled=false;
@@ -40,6 +65,10 @@ function play(){
     msg.textContent = "Guess a number from 1-"+level;
     answer = Math.floor(Math.random()*level)+1;
 }
+function updateTimer(){
+    gametime = (new Date().getTime() - start)/1000;
+    document.getElementById("timer").textContent = "Time: "+gametime.toFixed(3)+"s";
+}
 function makeGuess(){
     let userGuess = parseInt(guess.value);
     if(isNaN(userGuess)){
@@ -48,12 +77,36 @@ function makeGuess(){
     }
     score++;
     if(userGuess>answer){
-        msg.textContent = "Too high, try again";
+        if(Math.abs(userGuess-answer)<=3){
+           msg.textContent = "Too high, try again (you're hot)";
+        }
+        else if(Math.abs(userGuess-answer)<=8){
+           msg.textContent = "Too high, try again (you're warm)";
+        }
+        else if(Math.abs(userguess-answer<=20)){
+            msg.textContent = "Too high, try again (you're cold)";
+        }
+        else{
+        msg.textContent = "Too high, try again (you're ice cold!)";
+        } 
     }
     else if(userGuess<answer){
-        msg.textContent = "Too low, try again";
+        if(Math.abs(userGuess-answer)<=3){
+           msg.textContent = "Too low, try again (you're hot)";
+        }
+        else if(Math.abs(userGuess-answer)<=8){
+           msg.textContent = "Too low, try again (you're warm)";
+        }
+        else if(Math.abs(userguess-answer<=20)){
+            msg.textContent = "Too low, try again (you're cold)";
+        }
+        else{
+        msg.textContent = "Too low, try again (you're ice cold!)";
+        } 
     }
     else{
+        clearInterval(timerinterval);
+        totaltime+=gametime;
         if(score<4){
             msg.textContent = fullname+", you got it! It took you "+score+" tries. Excellent score! Press play to play again";
         }
@@ -64,6 +117,7 @@ function makeGuess(){
             msg.textContent = fullname+", you got it! It took you "+score+" tries. Quite bad, do better next time. Press play to play again";
         }
         updateScore();
+        updateStatsTime();
         reset();
     }
 }
@@ -100,6 +154,26 @@ function updateScore(){
 }
 function time(){
     let d = new Date();
-    dates.textContent = d;
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    let month = months[d.getMonth()];
+    let dayofweek = days[d.getDay()];
+    let day = d.getDate();
+    let year = d.getFullYear();
+    let time = d.toLocaleTimeString();
+    let suf;
+    if(day==1 || day==21 || day==31){
+         suf = "st";
+    }
+    else if(day==2 || day == 22){
+        suf = "nd";
+    }
+    else if(day == 3 || day == 23){
+        suf = "rd";
+    }
+    else{
+        suf="th";
+    }
+    dates.textContent = dayofweek+", "+month+" "+day+suf+" "+year+", "+time;
 }
 
