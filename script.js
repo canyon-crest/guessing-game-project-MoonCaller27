@@ -55,7 +55,7 @@ function giveUpFn(){
     clearInterval(timerinterval);
     totaltime+=gametime;
     updateStatsTime();
-    score=level;
+    score=Number(level);
     updateScore();
     reset();
 }
