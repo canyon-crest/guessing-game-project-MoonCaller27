@@ -51,6 +51,7 @@ function names(){
 function giveUpFn(){
     msg.style.color = "red";
     msg.textContent = "Why did you give up? bruh";
+    document.getElementById("lose").play();
     clearInterval(timerinterval);
     totaltime+=gametime;
     updateStatsTime();
@@ -131,9 +132,19 @@ function makeGuess(){
         } 
     }
     else{
-        msg.style.color="green";
+        
         clearInterval(timerinterval);
         totaltime+=gametime;
+        msg.style.color="green";
+        document.getElementById("win").play();
+
+        let color = ["maroon", "green", "burgundy", "blue"];
+        let c=0;
+        let fl = setInterval(()=>{
+            title.style.color = color[c%4];
+            c++;
+        },100);  
+        setTimeout(()=>{clearInterval(fl); title.style.color="black";}, 7000)
         if(score<4){
             msg.textContent = fullname+", you got it! It took you "+score+" tries. Excellent score! Press play to play again";
         }
